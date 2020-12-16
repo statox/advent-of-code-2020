@@ -14,7 +14,13 @@ try {
 // split the contents by new line
 const n = data.split(',').map(Number);
 
-let memory = {};
+/*
+ * This one trick changes the execution time from 3m50s to >2s
+ * I guess it's because JS regularly reassign the memory when the
+ * object size grows
+ */
+// let memory = {};
+let memory = new Array(30000000);
 let lastSpoken;
 
 /*
@@ -32,7 +38,6 @@ let turn;
 for (turn = 1; turn <= n.length; turn++) {
     lastSpoken = newNumber(n[turn - 1], turn);
 }
-console.log(lastSpoken, memory, turn);
 
 /*
  * Part 1:
@@ -44,7 +49,7 @@ let part1;
 let part2;
 const N1 = 2020;
 const N2 = 30000000;
-while (!part1) {
+while (!part2) {
     if (turn === N1) {
         part1 = lastSpoken;
     }
@@ -52,11 +57,12 @@ while (!part1) {
         part2 = lastSpoken;
     }
 
-    if (turn % 300000 === 0) {
-        console.log(turn);
-    }
+    /*
+     * if (turn % 300000 === 0) {
+     *     console.log(turn);
+     * }
+     */
     lastSpoken = newNumber(lastSpoken, turn);
-    console.log(lastSpoken, turn);
     turn++;
 }
 
